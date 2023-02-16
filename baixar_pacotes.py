@@ -45,9 +45,15 @@ app = xw.App(visible = False, add_book = False)
 wb = xw.Book(r"Fechamento de Inventário diário.xlsm")
 wb.activate()
 ws = wb.sheets["Sheet1"]
+excluir_abaixo_da_ultima_linha = wb.macro('excluir_abaixo_da_ultima_linha')
+remover_quebra_de_linhas = wb.macro('remover_quebra_de_linhas')
+app.screen_updating = False
 ws["historico_de_pacotes[[Id Pacote]:[Histórico]]"].clear_contents()
 ws["analise_historico_de_pacotes[ID do envio]"].clear_contents()
+ws["analise_historico_de_pacotes[Justificativa]"].clear_contents()
+excluir_abaixo_da_ultima_linha()
 ws["B2"].options(index=False, header=False).value = instancia_pacotes.historicoSemUsuario[['ID','Histórico','Data','Evento']]
 ws["H2"].options(index=False, header=False).value = instancia_pacotes.historicoSemUsuario['ID'].drop_duplicates()
-remover_quebra_de_linhas = wb.macro('remover_quebra_de_linhas')
 remover_quebra_de_linhas()
+app.screen_updating = True
+app.quit()
